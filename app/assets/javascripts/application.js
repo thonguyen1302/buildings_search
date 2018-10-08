@@ -19,17 +19,12 @@
 //= require bootstrap
 
 $(document).ready(function () {
-  // Grab the Country select box
-  var country = document.getElementById("country");
-
-  // When a user chooses a country, send a GET 
-  // request to the server with the country's id as a parameter
-  country.addEventListener("change", function(){
+  $("#country").change(function() {
     Rails.ajax({
       url: "/states?country=" + country.value,
       type: "GET"
     })
-  })  
+  });
 
 
 });

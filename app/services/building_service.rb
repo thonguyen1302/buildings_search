@@ -19,5 +19,20 @@ module BuildingService
 
       @result
     end
+
+
+    def details(building_id)
+      return [] if building_id.blank? 
+
+      source = "http://staging.gbig.org/api/v1/buildings/#{building_id}?key=#{Rails.application.secrets.api_key}"
+      resp = Net::HTTP.get_response(URI.parse(source))
+      data = resp.body
+
+      @result = JSON.parse(data)
+
+      @result = [] if @result.blank?
+
+      @result
+    end
   end
 end
