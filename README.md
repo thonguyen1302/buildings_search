@@ -52,8 +52,7 @@ Or you can copy the `secrets.yml` file in the email I sent you to `config` folde
 
 ![alt tag](https://github.com/thonguyen1302/buildings_search/blob/master/docs/search_result.png "search_result.png")
 
-Sometime we can see the paging if the result has more than 10 building
-
+Sometime we can see the paging if the result has more than 10 buildings
 ![alt tag](https://github.com/thonguyen1302/buildings_search/blob/master/docs/paging.png "paging.png")
 
 * We also see the map view
