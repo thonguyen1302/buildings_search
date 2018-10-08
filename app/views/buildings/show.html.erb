@@ -1,0 +1,53 @@
+<%= link_to "Back", :back %>
+
+<h2 class="text-primary text-center"><%= @building['name'] %></h2>
+
+<div class="row">
+  <div class="col-md-4">
+    <h3>Details</h3>
+    <p><b>Address:</b> <%= @building['formatted_address'] %></p>
+    <p><b>Location Type:</b> <%= @building['address']['location_type'] %></p>
+    <p><b>Utility provider:</b> <%= @building['address']['utility_provider'] %></p>
+  </div>
+  <div class="col-md-8">
+    <h3>Projects</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Project name</th>
+          <th>Project type</th>
+          <th>Total property area</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @building['projects'].each do |project| %>
+          <tr>
+            <td><%= project['name'] %></td>
+            <td><%= project['project_type'] %></td>
+            <td><%= project['total_property_area'] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table> 
+  </div>
+</div>
+
+
+
+<hr/>
+
+<h3 class="text-primary">Map View</h3>
+<div id="map" style='width: 100%; height: 400px;'></div>
+
+<script type="text/javascript">
+  var map = L.map('map').setView(["<%= @building['address']['latitude'] %>", "<%= @building['address']['longitude'] %>"], 11);;
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  L.marker(["<%= @building['address']['latitude'] %>", "<%= @building['address']['longitude'] %>"], {icon: L.icon({iconUrl: '/marker.png', iconSize: [48, 48]})}).addTo(map)
+    .bindPopup("<%= @building['formatted_address'] %>")
+    .openPopup();
+
+</script>

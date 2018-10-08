@@ -3,4 +3,6 @@ Rails.application.routes.draw do
 
   resources :states, only: :index
 
+  resources :buildings, only: :show
+
 end
