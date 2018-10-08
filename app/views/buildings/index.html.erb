@@ -1,0 +1,68 @@
+<h3 class="text-primary">Search</h3>
+
+<%= form_tag root_path, method: "GET" do |f| %>
+  <div class="field">
+    <!-- Name -->
+    <%= label_tag :name %>
+    <%= text_field_tag :name, params[:name], class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <!-- Country -->
+    <%= label_tag :country %>
+    <%= select_tag :country, options_for_select(CS.countries.map { |c| [c[1], c[0]] }, params[:country]), :include_blank => '', class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <!-- State -->
+    <%= label_tag :state %>
+    <%= select_tag :state, options_for_select(params[:country].blank? ? [] : CS.states(params[:country]).map { |c| [c[1], c[0]] }, params[:state]), :include_blank => '', class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <br/>
+    <%= submit_tag "Search", class: 'btn btn-primary' %>
+  </div>  
+<% end %> 
+
+
+<hr/>
+<h3 class="text-primary">List buildings</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @buildings.each do |building| %>
+      <tr>
+        <td><%= building['data']['names'][0] %></td>
+        <td><%= building['data']['address'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table> 
+
+<%= paginate @buildings%>
+
+<hr/>
+
+<h3 class="text-primary">Map View of <%= pluralize(@buildings.count, 'building') %> of page <%= @buildings.current_page %></h3>
+<div id="map" style='width: 100%; height: 400px;'></div>
+
+<script type="text/javascript">
+  var map = L.map('map').setView([51.505, -0.09], 11);
+
+  <% @buildings.each do |building| %>
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker(["<%= building['data']['latitude'] %>", "<%= building['data']['longitude'] %>"]).addTo(map)
+      .bindPopup("<%= building['data']['address'] %>")
+      .openPopup();
+  <% end %>
+
+</script>
